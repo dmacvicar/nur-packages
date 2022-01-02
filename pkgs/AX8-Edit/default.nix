@@ -1,4 +1,4 @@
-{ stdenv, wine, icoutils, xvfb-run, imagemagick, makeWrapper, fetchurl, makeDesktopItem }:
+{ stdenv, wine, icoutils, xvfb-run, imagemagick, makeWrapper, fetchurl, makeDesktopItem, lib }:
 
 let
   desktopFile = makeDesktopItem {
@@ -72,4 +72,15 @@ stdenv.mkDerivation {
   install -Dm644 "${desktopFile}/share/applications/"* \
     -t $out/share/applications/
   '';
+
+  meta = with lib; {
+    homepage = "https://www.fractalaudio.com/ax8-edit/";
+    downloadPage = "https://www.fractalaudio.com/ax8-downloads/";
+    description = ''
+    Software editor/librarian for the AX8 Amp Modeler + Multi-Fx Pedalboard
+    '';
+    license = licenses.unfree;
+    platforms = [ "x86_64-linux" "x86_64-darwin" ];
+  };
+
 }
