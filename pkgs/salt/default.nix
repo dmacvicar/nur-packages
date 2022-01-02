@@ -7,18 +7,20 @@
 }:
 python3.pkgs.buildPythonApplication rec {
   pname = "salt";
-  version = "3003.3";
+  version = "3004";
 
   src = python3.pkgs.fetchPypi {
     inherit pname version;
-    sha256 = "pvnIyLXiYA6oYgtKZzcd4XYRvrT42X5LubCzCKN+0eI=";
+    sha256 = "3d53561bc86e014dca2ec3dc981079be04d55ea047890cabde25e5b10bfa5b13";
   };
 
   propagatedBuildInputs = with python3.pkgs; [
+    contextvars
     distro
     jinja2
     markupsafe
     msgpack
+    psutil
     pycryptodomex
     pyyaml
     pyzmq
@@ -26,7 +28,7 @@ python3.pkgs.buildPythonApplication rec {
     tornado
   ] ++ extraInputs;
 
-  patches = [ ./fix-libcrypto-loading.patch ];
+  patches = [ ./fix-libcrypto-loading.patch ./zmq-version.patch ];
 
   postPatch = ''
     substituteInPlace "salt/utils/rsax931.py" \

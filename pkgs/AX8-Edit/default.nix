@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ stdenv, wine, icoutils, xvfb-run, imagemagick, makeWrapper, fetchurl, makeDesktopItem }:
 
 let
   desktopFile = makeDesktopItem {
@@ -15,14 +15,14 @@ stdenv.mkDerivation {
   name = "AX8-Edit-1.9.1";
 
   buildInputs = [
-    pkgs.wine
+    wine
   ];
 
   nativeBuildInputs = [
-    pkgs.xvfb-run
-    pkgs.imagemagick
-    pkgs.icoutils
-    pkgs.makeWrapper
+    xvfb-run
+    imagemagick
+    icoutils
+    makeWrapper
   ];
 
   preBuild = ''
@@ -47,12 +47,12 @@ stdenv.mkDerivation {
   chown $(whoami) $out
 
   # Run the installer under a virtual X11
-  xvfb-run ${pkgs.wine}/bin/wine ./AX8-Edit-Win.exe /VERYSILENT /SUPPRESSMSGBOXES /SP- /NOICONS
+  xvfb-run ${wine}/bin/wine ./AX8-Edit-Win.exe /VERYSILENT /SUPPRESSMSGBOXES /SP- /NOICONS
 
   mv "$out/drive_c/Program Files/Fractal Audio" "$out/FractalAudio"
 
   # we need to do something with this uggly icon
-  ${pkgs.icoutils}/bin/wrestool -x -t 14 "$out/FractalAudio/AX8-Edit/AX8-Edit.exe" > icon.ico
+  ${icoutils}/bin/wrestool -x -t 14 "$out/FractalAudio/AX8-Edit/AX8-Edit.exe" > icon.ico
   nIcon=6
   for s in 16x16 32x32 48x48 256x256; do
     kIcon=$((nIcon++))
@@ -65,7 +65,7 @@ stdenv.mkDerivation {
   cat << EOF > $out/bin/AX8-Edit
   export WINEDLLOVERRIDES=""
   export WINEPREFIX="\$HOME/.ax8-edit"
-  ${pkgs.wine}/bin/wine "$out/FractalAudio/AX8-Edit/AX8-Edit.exe"
+  ${wine}/bin/wine "$out/FractalAudio/AX8-Edit/AX8-Edit.exe"
   EOF
   chmod +x $out/bin/AX8-Edit
 
