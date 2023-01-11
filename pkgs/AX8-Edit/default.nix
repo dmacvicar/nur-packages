@@ -8,7 +8,7 @@ let
     icon = "AX8-Edit.png";
     exec = "AX8-Edit";
     type = "Application";
-    categories = "AudioVideo;Recorder;AudioVideo";
+    categories = [ "AudioVideo" "Recorder" ];
   };
 in
 stdenv.mkDerivation {
