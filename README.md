@@ -1,1 +1,1 @@
-# nur-packages
+# my (nix) packages 
